@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <title>趣棋小将 FunChess Kids · 儿童国际象棋学习对战</title>
+  <meta name="description" content="面向 6-14 岁儿童的国际象棋学习对战应用：课程教学、人机对战、智能复盘、战术闯关、成就统计。">
+  <meta name="theme-color" content="#FFB703">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="app"></div>
+  <div id="tabbar-host"></div>
+  <div id="toast-wrap"></div>
+  <div id="modal-root"></div>
+
+  <script src="js/chess-core.js"></script>
+  <script src="js/engine.js"></script>
+  <script src="js/analysis.js"></script>
+  <script src="js/content.js"></script>
+  <script src="js/sounds.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/board.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/play.js"></script>
+  <script src="js/learn.js"></script>
+  <script src="js/review.js"></script>
+  <script src="js/data-views.js"></script>
+  <script>
+    // 注册 Service Worker（PWA 离线可用；file:// 打开时静默跳过）
+    if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+      navigator.serviceWorker.register('sw.js').catch(function (e) { console.warn('SW 注册失败', e); });
+    }
+  </script>
+</body>
+</html>

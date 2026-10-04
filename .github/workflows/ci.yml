@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: 语法检查（全部 JS）
+        run: |
+          fail=0
+          for f in js/*.js sw.js tests/*.js tools/*.js workers/*.js; do
+            node --check "$f" || fail=1
+          done
+          exit $fail
+
+      - name: perft 着法生成正确性
+        run: node tests/perft.js
+
+      - name: 规则语义测试
+        run: node tests/test-rules.js
+
+      - name: AI 引擎测试
+        run: node tests/test-engine.js
+
+      - name: 内容库校验
+        run: node tests/test-content.js

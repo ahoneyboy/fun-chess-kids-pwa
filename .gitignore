@@ -1,0 +1,32 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# 依赖与构建产物
+node_modules/
+dist/
+build/
+
+# 环境变量与密钥（敏感信息红线：严禁入库）
+.env
+.env.*
+*.pem
+*.key
+*.p12
+secrets/
+
+# 微信小程序工程私有配置（本项目虽为 PWA，仍按规范防御性忽略）
+project.private.config.json
+miniprogram_npm/
+
+# 日志与临时文件
+*.log
+tmp/
+tmp.*
+.DS_Store?
+
+# 编辑器
+.vscode/
+.idea/
+*.swp

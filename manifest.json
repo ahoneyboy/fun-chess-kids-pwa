@@ -1,0 +1,17 @@
+{
+  "name": "趣棋小将 FunChess Kids",
+  "short_name": "趣棋小将",
+  "description": "面向 6-14 岁儿童的国际象棋学习对战应用：课程教学、人机对战、智能复盘、战术闯关、成就统计。",
+  "lang": "zh-CN",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#FFF9F0",
+  "theme_color": "#FFB703",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
