@@ -43,6 +43,11 @@ p { margin: 0.4em 0; }
   margin: 0 auto;
   padding: 16px 16px calc(88px + env(safe-area-inset-bottom));
 }
+/* 手机端收窄页边距，给棋盘让出更多宽度 */
+@media (max-width: 859px) {
+  .page { padding-left: 10px; padding-right: 10px; }
+  .page-play, .page-review { padding-left: 6px; padding-right: 6px; }
+}
 .page-title { font-size: 24px; font-weight: 800; margin: 6px 0 14px; }
 .page-sub { color: var(--ink-soft); }
 .muted, .muted-p { color: var(--ink-soft); font-size: 14px; }
@@ -150,21 +155,42 @@ p { margin: 0.4em 0; }
 
 /* ---------- 棋盘 ---------- */
 .board-host { flex: 1; min-width: 0; }
-.fc-board-wrap { position: relative; width: 100%; aspect-ratio: 1 / 1; max-width: 640px; }
+.fc-board-wrap { position: relative; width: 100%; aspect-ratio: 1 / 1; max-width: 100%; margin: 0 auto; }
 .fc-board-canvas { display: block; border-radius: 12px; box-shadow: 0 6px 24px rgba(90, 70, 40, 0.18); touch-action: none; }
 
-.board-with-eval { display: flex; gap: 10px; align-items: stretch; justify-content: center; min-width: 0; }
+.board-with-eval { position: relative; display: flex; gap: 10px; align-items: stretch; justify-content: center; min-width: 0; }
 .board-with-eval > #eval-host:empty, .board-with-eval > #rev-eval:empty { display: none; }
+/* 局势条悬浮在棋盘右缘，不占用棋盘宽度 */
+.board-with-eval > #eval-host:not(:empty),
+.board-with-eval > #rev-eval:not(:empty) {
+  position: absolute;
+  right: 12px; top: 12px; bottom: 12px;
+  width: 12px;
+  z-index: 6;
+  pointer-events: none;
+}
 /* 防止 canvas 撑破布局：棋盘列允许收缩，画布不超出容器 */
 .play-layout > *, .review-layout > * { min-width: 0; }
 .fc-board-canvas { max-width: 100%; max-height: 100%; }
 
-/* 局势条 */
-.eval-bar { display: flex; flex-direction: column; align-items: center; width: 34px; }
-.eval-label-top, .eval-label-bottom { font-size: 11px; color: var(--ink-soft); font-weight: 700; }
-.eval-track { flex: 1; width: 14px; background: #3A342C; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column-reverse; margin: 4px 0; }
-.eval-white-fill { width: 100%; background: #FDFDFD; transition: height 0.5s ease; height: 50%; }
-.eval-score { font-size: 11px; font-weight: 800; color: var(--ink-soft); }
+/* 局势条：棋盘右缘细条 + 分数角标 */
+.eval-bar { position: relative; width: 12px; height: 100%; }
+.eval-label-top, .eval-label-bottom { display: none; }
+.eval-track {
+  position: absolute; inset: 0;
+  background: #3A342C;
+  border-radius: 7px;
+  overflow: hidden;
+  box-shadow: 0 0 0 2px rgba(255, 253, 246, 0.85), 0 2px 10px rgba(0, 0, 0, 0.28);
+}
+.eval-white-fill { position: absolute; left: 0; bottom: 0; width: 100%; background: #FCFBF4; transition: height 0.5s ease; height: 50%; }
+.eval-score {
+  position: absolute; right: 20px; bottom: 0;
+  background: rgba(42, 36, 28, 0.82); color: #fff;
+  font-size: 11px; font-weight: 800;
+  padding: 2px 8px; border-radius: 9px;
+  white-space: nowrap;
+}
 
 /* 升变浮层 */
 .fc-promo {
@@ -183,7 +209,7 @@ p { margin: 0.4em 0; }
 
 /* ---------- 对战页 ---------- */
 .play-layout { display: grid; grid-template-columns: 1fr; gap: 12px; }
-.play-status { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 10px 14px; margin: 0 0 10px; }
+.play-status { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 10px 14px; margin: 0 0 10px; position: sticky; top: 8px; z-index: 30; }
 .status-me { font-weight: 700; font-size: 14px; color: var(--ink-soft); }
 .status-turn { font-weight: 800; margin-left: auto; }
 .status-timer { font-weight: 800; color: var(--primary-deep); }
@@ -196,8 +222,8 @@ p { margin: 0.4em 0; }
 .thinking-dots i:nth-child(3) { animation-delay: 0.3s; }
 @keyframes bounce { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-5px); } }
 
-.play-controls { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
-.play-controls .btn { flex: 1; min-width: 86px; padding: 10px 6px; font-size: 14px; }
+.play-controls { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-top: 10px; }
+.play-controls .btn { min-width: 0; padding: 10px 4px; font-size: 14px; }
 
 .coach-card { border-left: 6px solid var(--accent); }
 .coach-name { font-weight: 800; margin-bottom: 4px; }
@@ -229,14 +255,14 @@ p { margin: 0.4em 0; }
 .section-card p { color: #52483F; }
 
 .demo-card .demo-layout { display: flex; gap: 12px; flex-direction: column; }
-.demo-board { max-width: 320px; }
+.demo-board { max-width: 400px; margin: 0 auto; width: 100%; }
 .demo-note-text { min-height: 44px; font-weight: 700; margin-bottom: 8px; }
 .demo-step { color: var(--ink-soft); font-size: 13px; margin-top: 6px; }
 .demo-note { color: var(--ink-soft); }
 
 .task-card { border-left: 6px solid var(--primary); }
 .task-goal { font-weight: 700; }
-.task-board { max-width: 340px; margin: 8px 0; }
+.task-board { max-width: 440px; margin: 8px auto; }
 .task-feedback { min-height: 28px; font-weight: 700; }
 .fb-ok { color: #2E7D32; }
 .fb-no { color: #C0392B; }
@@ -417,34 +443,46 @@ p { margin: 0.4em 0; }
   .lesson-grid, .endgame-grid { grid-template-columns: 1fr 1fr; }
   .home-grid { grid-template-columns: repeat(4, 1fr); }
   .stat-grid { grid-template-columns: repeat(4, 1fr); }
-  .task-board { max-width: 380px; }
+  .task-board { max-width: 480px; }
+}
+
+/* 手机：首页「人机对战」改为通栏主卡，学习/战术/统计三卡一行 */
+@media (max-width: 619px) {
+  .home-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .hc-play { grid-column: 1 / -1; order: -1; display: flex; align-items: center; gap: 14px; padding: 14px 16px; }
+  .hc-play .hc-icon { font-size: 40px; }
+  .hc-play .hc-title { font-size: 18px; }
+  .hc-play .hc-sub { margin-top: 0; }
 }
 
 /* 平板横屏 / PC：对战与复盘改为 左棋盘 + 右面板 */
 @media (min-width: 860px) and (orientation: landscape), (min-width: 980px) {
   .play-layout, .review-layout {
-    grid-template-columns: minmax(340px, 560px) minmax(300px, 1fr);
+    grid-template-columns: minmax(340px, 640px) minmax(300px, 1fr);
     align-items: start;
   }
   .play-aside, .review-aside { position: sticky; top: 12px; }
-  .fc-board-wrap { max-width: 560px; }
+  /* 桌面棋盘上限：宽度尽量大，同时保证棋盘+控制栏一屏放下 */
+  .fc-board-wrap { max-width: min(640px, calc(100vh - 250px)); }
+  .movelist { max-height: calc(100vh - 400px); min-height: 120px; }
+  .movelist-review { max-height: 260px; }
   .quiz-layout { flex-direction: row; align-items: flex-start; }
-  .quiz-layout .task-board { flex: 1; max-width: 420px; }
+  .quiz-layout .task-board { flex: 1; max-width: 480px; }
   .quiz-side { flex: 1; }
   .demo-card .demo-layout { flex-direction: row; }
-  .demo-card .demo-board { width: 300px; flex-shrink: 0; }
+  .demo-card .demo-board { width: 360px; flex-shrink: 0; margin: 0; }
   .demo-card .demo-panel { flex: 1; }
 }
 
 /* PC 宽屏 */
 @media (min-width: 1280px) {
   .page { padding-top: 24px; }
-  .fc-board-wrap { max-width: 600px; }
+  .fc-board-wrap { max-width: min(760px, calc(100vh - 250px)); }
+  .play-layout, .review-layout { grid-template-columns: minmax(360px, 760px) minmax(320px, 1fr); }
 }
-
-/* 大字号适配：棋盘高度受限时缩小 */
-@media (max-height: 720px) and (min-width: 860px) {
-  .fc-board-wrap { max-width: min(560px, calc(100vh - 250px)); }
+/* 开局设置卡：宽屏下限宽居中，避免拉伸 */
+@media (min-width: 980px) {
+  .setup-card, .resume-card { max-width: 760px; margin-left: auto; margin-right: auto; }
 }
 
 /* 减少动态效果偏好 */
