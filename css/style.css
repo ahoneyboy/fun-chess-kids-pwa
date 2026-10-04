@@ -226,7 +226,7 @@ p { margin: 0.4em 0; }
 .dot.draw { background: #CBB79A; }
 
 /* ---------- 棋盘 ---------- */
-.board-host { flex: 1; min-width: 0; }
+.board-host { order: 1; width: 100%; min-width: 0; margin: 0 auto; }
 .fc-board-wrap { position: relative; width: 100%; aspect-ratio: 1 / 1; max-width: 100%; margin: 0 auto; }
 .fc-board-canvas {
   display: block; border-radius: 14px; touch-action: none;
@@ -238,38 +238,39 @@ p { margin: 0.4em 0; }
     0 3px 10px rgba(90, 70, 40, 0.12);
 }
 
-.board-with-eval { position: relative; display: flex; gap: 10px; align-items: stretch; justify-content: center; min-width: 0; }
+.board-with-eval { position: relative; display: flex; flex-direction: column; gap: 0; min-width: 0; }
 .board-with-eval > #eval-host:empty, .board-with-eval > #rev-eval:empty { display: none; }
-/* 局势条悬浮在棋盘右缘，不占用棋盘宽度 */
+/* 局势条横放在棋盘正下方，与棋盘同宽，不遮挡任何格子 */
 .board-with-eval > #eval-host:not(:empty),
 .board-with-eval > #rev-eval:not(:empty) {
-  position: absolute;
-  right: 12px; top: 12px; bottom: 12px;
-  width: 12px;
-  z-index: 6;
+  order: 2;
+  width: 100%;
+  margin: 10px auto 0;
   pointer-events: none;
 }
 /* 防止 canvas 撑破布局：棋盘列允许收缩，画布不超出容器 */
 .play-layout > *, .review-layout > * { min-width: 0; }
 .fc-board-canvas { max-width: 100%; max-height: 100%; }
 
-/* 局势条：棋盘右缘细条 + 分数角标 */
-.eval-bar { position: relative; width: 12px; height: 100%; }
+/* 局势条：横向平衡条（白方优势从左侧推进）+ 右侧分数 */
+.eval-bar { display: flex; align-items: center; gap: 8px; width: 100%; height: 16px; }
 .eval-label-top, .eval-label-bottom { display: none; }
 .eval-track {
-  position: absolute; inset: 0;
+  position: relative; flex: 1; height: 10px;
   background: #3A342C;
-  border-radius: 7px;
+  border-radius: 999px;
   overflow: hidden;
-  box-shadow: 0 0 0 2px rgba(255, 253, 246, 0.85), 0 2px 10px rgba(0, 0, 0, 0.28);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.35);
 }
-.eval-white-fill { position: absolute; left: 0; bottom: 0; width: 100%; background: #FCFBF4; transition: height 0.5s ease; height: 50%; }
+.eval-white-fill {
+  position: absolute; left: 0; top: 0; height: 100%; width: 50%;
+  background: linear-gradient(180deg, #FFFFFF, #EFEAE0);
+  transition: width 0.5s ease;
+}
 .eval-score {
-  position: absolute; right: 20px; bottom: 0;
-  background: rgba(42, 36, 28, 0.82); color: #fff;
-  font-size: 11px; font-weight: 800;
-  padding: 2px 8px; border-radius: 9px;
-  white-space: nowrap;
+  font-size: 12px; font-weight: 800; color: var(--ink-soft);
+  min-width: 36px; text-align: right;
+  font-variant-numeric: tabular-nums;
 }
 
 /* 升变浮层 */
@@ -649,8 +650,12 @@ h1, h2, h3 { letter-spacing: 0.01em; }
     align-items: start;
   }
   .play-aside, .review-aside { position: sticky; top: 12px; }
-  /* 桌面棋盘上限：宽度尽量大，同时保证棋盘+控制栏一屏放下 */
-  .fc-board-wrap { max-width: min(640px, calc(100vh - 250px)); }
+  /* 桌面棋盘上限：宽度尽量大，同时保证棋盘+控制栏一屏放下；局势条与棋盘同宽 */
+  .fc-board-wrap, .board-host,
+  .board-with-eval > #eval-host:not(:empty),
+  .board-with-eval > #rev-eval:not(:empty) {
+    max-width: min(640px, calc(100vh - 250px));
+  }
   .movelist { max-height: calc(100vh - 400px); min-height: 120px; }
   .movelist-review { max-height: 260px; }
   .quiz-layout { flex-direction: row; align-items: flex-start; }
@@ -664,7 +669,11 @@ h1, h2, h3 { letter-spacing: 0.01em; }
 /* PC 宽屏 */
 @media (min-width: 1280px) {
   .page { padding-top: 24px; }
-  .fc-board-wrap { max-width: min(760px, calc(100vh - 250px)); }
+  .fc-board-wrap, .board-host,
+  .board-with-eval > #eval-host:not(:empty),
+  .board-with-eval > #rev-eval:not(:empty) {
+    max-width: min(760px, calc(100vh - 250px));
+  }
   .play-layout, .review-layout { grid-template-columns: minmax(360px, 760px) minmax(320px, 1fr); }
 }
 /* 开局设置卡：宽屏下限宽居中，避免拉伸 */

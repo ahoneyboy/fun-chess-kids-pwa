@@ -108,7 +108,7 @@
           pct = 100 * (1 / (1 + Math.exp(-cp / 320)));
           text = (cp >= 0 ? '+' : '') + (cp / 100).toFixed(1);
         }
-        fill.style.height = pct + '%';
+        fill.style.width = pct + '%';
         scoreEl.textContent = text;
       }
     };

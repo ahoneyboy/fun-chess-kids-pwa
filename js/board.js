@@ -53,9 +53,10 @@
       if (root.ResizeObserver) {
         this._ro = new ResizeObserver(() => this.resize());
         this._ro.observe(container);
-      } else {
-        root.addEventListener('resize', () => this.resize());
       }
+      // 窗口 resize 兜底（个别环境 ResizeObserver 在视口突变时不触发）
+      this._onWinResize = () => { clearTimeout(this._wrT); this._wrT = setTimeout(() => this.resize(), 80); };
+      root.addEventListener('resize', this._onWinResize);
       this.resize();
     }
 
@@ -420,6 +421,8 @@
 
     destroy() {
       if (this._ro) this._ro.disconnect();
+      root.removeEventListener('resize', this._onWinResize);
+      clearTimeout(this._wrT);
       this._promoEl.remove();
       this.canvas.remove();
     }
