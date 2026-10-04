@@ -3,12 +3,12 @@
  * 缓存优先策略：全部静态资源一次缓存，离线也能完整使用。
  * 更新版本时请同步把 CACHE 版本号 +1。
  * ============================================================ */
-const CACHE = 'funchess-v3';
+const CACHE = 'funchess-v4';
 const ASSETS = [
   './',
   'index.html',
   'manifest.json',
-  'css/style.css?v=3',
+  'css/style.css?v=4',
   'js/chess-core.js',
   'js/engine.js',
   'js/analysis.js',
