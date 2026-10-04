@@ -145,8 +145,9 @@ gh auth login          # 首次需要登录（或 export GITHUB_TOKEN=...）
 ./deploy.sh my-repo    # 自定义仓库名
 ```
 
-> 本仓库即按上述流程部署：`https://github.com/ahoneyboy/fun-chess-kids-pwa`（private，凭据存在时自动推送；
-> 若推送 CI 报 workflow scope 错误，见上文「CI 首次推送说明」）。
+> 本仓库即按上述流程部署：`https://github.com/ahoneyboy/fun-chess-kids-pwa`（已开启 GitHub Pages，
+> 在线地址：<https://ahoneyboy.github.io/fun-chess-kids-pwa/>）。若推送 CI 报 workflow scope 错误，
+> 见上文「CI 首次推送说明」。
 
 ## ⚠️ 已知限制与路线图
 
