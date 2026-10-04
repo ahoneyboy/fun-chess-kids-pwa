@@ -82,6 +82,14 @@ node tests/test-content.js # 课程演示着法、任务答案、题解、残局
 
 push 到 `main` 时 GitHub Actions 会自动执行上述测试（见 `.github/workflows/ci.yml`）。
 
+> **CI 首次推送说明**：推送 `.github/workflows/` 需要 GitHub 凭据具备 `workflow` 权限。若首次 `git push` 报
+> `refusing to allow an OAuth App to create or update workflow`，执行以下命令补授权后，再
+> `git add -f .github/workflows/ci.yml && git commit -m "ci: add workflow" && git push`：
+>
+> ```bash
+> gh auth refresh -h github.com -s workflow   # 按提示完成浏览器授权
+> ```
+
 ---
 
 ## 🏗️ 项目结构
@@ -136,6 +144,9 @@ gh auth login          # 首次需要登录（或 export GITHUB_TOKEN=...）
 ./deploy.sh            # 默认建私有仓库 fun-chess-kids-pwa
 ./deploy.sh my-repo    # 自定义仓库名
 ```
+
+> 本仓库即按上述流程部署：`https://github.com/ahoneyboy/fun-chess-kids-pwa`（private，凭据存在时自动推送；
+> 若推送 CI 报 workflow scope 错误，见上文「CI 首次推送说明」）。
 
 ## ⚠️ 已知限制与路线图
 
