@@ -252,25 +252,48 @@ p { margin: 0.4em 0; }
 .play-layout > *, .review-layout > * { min-width: 0; }
 .fc-board-canvas { max-width: 100%; max-height: 100%; }
 
-/* 局势条：横向平衡条（白方优势从左侧推进）+ 右侧分数 */
-.eval-bar { display: flex; align-items: center; gap: 8px; width: 100%; height: 16px; }
-.eval-label-top, .eval-label-bottom { display: none; }
+/* 局势条：横向平衡条（白方优势从左推进）+ 两端标签 + 分数徽章 */
+.eval-bar { display: flex; align-items: center; gap: 8px; width: 100%; min-height: 26px; }
+.eval-label-top, .eval-label-bottom {
+  display: block; flex-shrink: 0;
+  font-size: 12px; font-weight: 800; color: var(--ink-soft);
+}
+.eval-label-top { color: #4A4238; }
+.eval-label-bottom { color: #9A8C7A; }
 .eval-track {
-  position: relative; flex: 1; height: 10px;
+  position: relative; flex: 1; height: 16px;
   background: #3A342C;
   border-radius: 999px;
   overflow: hidden;
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.35);
+  box-shadow:
+    inset 0 2px 5px rgba(0, 0, 0, 0.5),
+    0 0 0 2px rgba(138, 107, 74, 0.32),
+    0 3px 8px rgba(90, 70, 40, 0.20);
 }
 .eval-white-fill {
   position: absolute; left: 0; top: 0; height: 100%; width: 50%;
-  background: linear-gradient(180deg, #FFFFFF, #EFEAE0);
+  background: linear-gradient(180deg, #FFFFFF 0%, #F6F2E8 78%, #EAE3D2 100%);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.55);
   transition: width 0.5s ease;
 }
+/* 中心基准线：优势以中线为界 */
+.eval-track::after {
+  content: "";
+  position: absolute; left: 50%; top: 0; bottom: 0; width: 2px;
+  margin-left: -1px;
+  background: rgba(255, 255, 255, 0.35);
+  pointer-events: none;
+}
 .eval-score {
-  font-size: 12px; font-weight: 800; color: var(--ink-soft);
-  min-width: 36px; text-align: right;
+  flex-shrink: 0;
+  min-width: 48px; text-align: center;
+  font-size: 13px; font-weight: 800;
+  color: #fff;
+  background: linear-gradient(180deg, #6E9BF5, #4A7DE8);
+  padding: 3px 10px;
+  border-radius: 999px;
   font-variant-numeric: tabular-nums;
+  box-shadow: 0 3px 10px rgba(91, 141, 239, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
 
 /* 升变浮层 */

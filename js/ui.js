@@ -88,9 +88,9 @@
     const el = document.createElement('div');
     el.className = 'eval-bar';
     el.innerHTML = `
-      <div class="eval-label-top">黑</div>
+      <div class="eval-label-top">白</div>
       <div class="eval-track"><div class="eval-white-fill"></div></div>
-      <div class="eval-label-bottom">白</div>
+      <div class="eval-label-bottom">黑</div>
       <div class="eval-score">0.0</div>`;
     const fill = el.querySelector('.eval-white-fill');
     const scoreEl = el.querySelector('.eval-score');
