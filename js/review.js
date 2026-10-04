@@ -188,8 +188,9 @@
         item.addEventListener('click', () => goto(+item.dataset.ply, false));
       });
     }
-    const cls = p => p.level === 'blunder' ? 'ml-blunder' : p.level === 'mistake' ? 'ml-mistake' : p.level === 'minor' ? 'ml-minor' : '';
-    const mark = p => p.level === 'blunder' ? '??' : p.level === 'mistake' ? '?' : p.level === 'minor' ? '?!' : '';
+    /* 失误标记（b 为 undefined = 该行只有白方步，例如白方走出终局将杀） */
+    const cls = p => !p ? '' : p.level === 'blunder' ? 'ml-blunder' : p.level === 'mistake' ? 'ml-mistake' : p.level === 'minor' ? 'ml-minor' : '';
+    const mark = p => !p ? '' : p.level === 'blunder' ? '??' : p.level === 'mistake' ? '?' : p.level === 'minor' ? '?!' : '';
     function highlightMoveList() {
       main.querySelectorAll('.ml-item').forEach(item => item.classList.toggle('ml-cur', +item.dataset.ply === curPly));
       const cur = main.querySelector(`.ml-item[data-ply="${curPly}"]`);
